@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}儀表板 - 個人記帳簿{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">總餘額</h5>
+                <p class="card-text fs-2">${{ balance }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">本月收入</h5>
+                <p class="card-text fs-2">${{ monthly.income }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">本月支出</h5>
+                <p class="card-text fs-2">${{ monthly.expense }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>近期交易紀錄</h4>
+        <ul class="list-group">
+            {% for txn in recent %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ txn.date }} - {{ txn.category }}
+                <span class="badge {% if txn.type == 'income' %}bg-success{% else %}bg-danger{% endif %} rounded-pill">
+                    ${{ txn.amount }}
+                </span>
+            </li>
+            {% else %}
+            <li class="list-group-item">尚無紀錄</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('transaction.create') }}" class="btn btn-primary mt-3">新增紀錄</a>
+    </div>
+    <div class="col-md-6">
+        <h4>本月預算狀況</h4>
+        {% if budget %}
+        <p>設定總預算：${{ budget.amount }}</p>
+        <p>目前已支出：${{ monthly.expense }}</p>
+        <p>剩餘預算：${{ budget.amount - monthly.expense }}</p>
+        {% else %}
+        <p>本月尚未設定預算。</p>
+        <a href="{{ url_for('budget.settings') }}" class="btn btn-outline-primary">設定預算</a>
+        {% endif %}
+
+        <h4 class="mt-4">今日到期固定支出</h4>
+        <ul class="list-group">
+            {% for item in due_today %}
+            <li class="list-group-item list-group-item-warning">
+                {{ item.name }} (${{ item.amount }})
+            </li>
+            {% else %}
+            <li class="list-group-item">無</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

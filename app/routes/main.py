@@ -1,36 +1,25 @@
-"""
-個人記帳簿 — 首頁 / 儀表板路由
-
-Blueprint: main
-URL Prefix: /
-"""
-
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
+from app.models.transaction import Transaction
+from app.models.budget import Budget
+from app.models.recurring import Recurring
+from datetime import date
 
 bp = Blueprint('main', __name__)
-
 
 @bp.route('/')
 @login_required
 def index():
-    """首頁儀表板
-
-    顯示：
-    - 目前總餘額
-    - 本月收入合計、支出合計
-    - 預算警示（黃色 80% / 紅色 100%）
-    - 今日到期的固定支出提醒
-    - 最近 10 筆交易紀錄
-
-    處理邏輯：
-    1. Transaction.get_total_balance(user_id) → 總餘額
-    2. Transaction.get_monthly_summary(user_id, year, month) → 本月收支
-    3. Transaction.get_recent(user_id, limit=10) → 近期交易
-    4. Budget.get_all(user_id, year, month) → 本月預算設定
-    5. 計算預算使用率與警示等級
-    6. Recurring.get_due_today(user_id) → 今日到期固定支出
-
-    輸出：渲染 index.html
-    """
-    return "<h1>歡迎來到首頁！(儀表板開發中)</h1><a href='/logout'>登出</a>"
+    today = date.today()
+    balance = Transaction.get_total_balance(current_user.id)
+    monthly = Transaction.get_monthly_summary(current_user.id, today.year, today.month)
+    recent = Transaction.get_recent(current_user.id, limit=5)
+    budget = Budget.get_monthly_total(current_user.id, today.year, today.month)
+    due_today = Recurring.get_due_today(current_user.id)
+    
+    return render_template('index.html', 
+        balance=balance, 
+        monthly=monthly, 
+        recent=recent, 
+        budget=budget, 
+        due_today=due_today)

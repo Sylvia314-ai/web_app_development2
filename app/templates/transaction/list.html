@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}紀錄列表 - 個人記帳簿{% endblock %}
+{% block content %}
+<h2>所有交易紀錄</h2>
+<a href="{{ url_for('transaction.create') }}" class="btn btn-primary mb-3">新增紀錄</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>類型</th>
+            <th>分類</th>
+            <th>金額</th>
+            <th>備註</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for txn in transactions %}
+        <tr>
+            <td>{{ txn.date }}</td>
+            <td>{% if txn.type == 'income' %}<span class="text-success">收入</span>{% else %}<span class="text-danger">支出</span>{% endif %}</td>
+            <td>{{ txn.category }}</td>
+            <td>${{ txn.amount }}</td>
+            <td>{{ txn.note }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

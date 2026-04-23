@@ -22,6 +22,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('main.index') }}">儀表板</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">記帳功能</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('transaction.create') }}">新增紀錄</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('transaction.list_all') }}">所有紀錄</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('budget.settings') }}">預算設定</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('recurring.manage') }}">固定支出</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <span class="nav-link text-light border-start ms-2 ps-3">哈囉，{{ current_user.username }}</span>
                         </li>
