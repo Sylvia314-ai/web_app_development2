@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}登入 - 個人記帳簿{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="card-title text-center mb-4 fw-bold text-primary">登入帳號</h3>
+                <form method="POST" action="{{ url_for('auth.login_submit') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label text-muted small fw-bold") }}
+                        {{ form.username(class="form-control form-control-lg bg-light", placeholder="請輸入帳號") }}
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.password.label(class="form-label text-muted small fw-bold") }}
+                        {{ form.password(class="form-control form-control-lg bg-light", placeholder="請輸入密碼") }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg fw-bold") }}
+                    </div>
+                </form>
+                <hr class="my-4">
+                <div class="text-center text-muted small">
+                    <p class="mb-0">還沒有帳號嗎？ <a href="{{ url_for('auth.register_form') }}" class="text-decoration-none fw-bold">立即註冊</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

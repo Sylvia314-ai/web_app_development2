@@ -33,4 +33,4 @@ def index():
 
     輸出：渲染 index.html
     """
-    pass
+    return "<h1>歡迎來到首頁！(儀表板開發中)</h1><a href='/logout'>登出</a>"
